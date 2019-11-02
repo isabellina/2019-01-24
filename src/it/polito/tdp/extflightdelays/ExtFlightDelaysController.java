@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.extflightdelays.model.Model;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -47,7 +49,7 @@ public class ExtFlightDelaysController {
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
-
+    	model.creaGrafo();
     }
 
     @FXML
@@ -57,11 +59,13 @@ public class ExtFlightDelaysController {
 
     @FXML
     void doVisualizzaVelivoli(ActionEvent event) {
-
+	    txtResult.clear();
+	    txtResult.appendText(model.getVicini(cmbBoxStati.getValue()));
     }
     
     public void setModel(Model model) {
 		this.model = model;	
+		this.init();
 	}
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -73,6 +77,17 @@ public class ExtFlightDelaysController {
         assert txtT != null : "fx:id=\"txtT\" was not injected: check your FXML file 'ExtFlightDelays.fxml'.";
         assert txtG != null : "fx:id=\"txtG\" was not injected: check your FXML file 'ExtFlightDelays.fxml'.";
         assert btnSimula != null : "fx:id=\"btnSimula\" was not injected: check your FXML file 'ExtFlightDelays.fxml'.";
+        
 
     }
+    
+    public void init() {
+    	ObservableList<String> stati = FXCollections.observableList(model.getstati());
+    	cmbBoxStati.setItems(stati);
+    	cmbBoxStati.setValue(stati.get(0));
+    }
+    
+    
+    
+    
 }

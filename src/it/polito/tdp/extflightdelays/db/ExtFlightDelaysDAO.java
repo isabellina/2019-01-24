@@ -15,7 +15,8 @@ import it.polito.tdp.extflightdelays.model.Flight;
 public class ExtFlightDelaysDAO {
 
 	public List<String> loadAllStates(){
-		String sql = "SELECT distinct(STATE) from airports";
+		String sql = "SELECT distinct(STATE) from airports "
+				+ "order by state asc";
 		List<String> result = new ArrayList<String>();
 
 		try {
@@ -115,4 +116,69 @@ public class ExtFlightDelaysDAO {
 			throw new RuntimeException("Error Connection Database");
 		}
 	}
+	
+	public List<Integer> getAirportsByState(String stato){
+		String sql = "select id " +
+		"from airports "+ 
+		"where state = ?" ;
+		List<Integer> airportByState = new LinkedList<Integer>();
+		
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setString(1, stato);
+			ResultSet rs = st.executeQuery();
+			
+			while(rs.next()) {
+				airportByState.add(rs.getInt("id"));
+			}
+			conn.close();
+			return airportByState;
+		
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+		
+	}
+	
+	
+	public int peso(int a, int b) {
+		String sql = "select count(distinct tail_number) as total\r\n" + 
+				"from flights\r\n" + 
+				"where `ORIGIN_AIRPORT_ID`= ? and `DESTINATION_AIRPORT_ID` = ? " ;
+		int r = -1;
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, a);
+			st.setInt(2, b);
+			ResultSet rs = st.executeQuery();
+		
+			if(rs.next()) {
+				r = rs.getInt("total");
+			}
+			conn.close();
+			
+	}
+		
+		catch(SQLException e) {
+		e.printStackTrace();
+	}
+	
+	return r;
+	
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }
