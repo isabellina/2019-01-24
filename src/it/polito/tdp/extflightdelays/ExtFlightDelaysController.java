@@ -54,7 +54,20 @@ public class ExtFlightDelaysController {
 
     @FXML
     void doSimula(ActionEvent event) {
-
+    	String p = cmbBoxStati.getValue();
+    	int g;
+    	int t;
+    	try {
+			g = Integer.parseInt(txtG.getText());
+			t = Integer.parseInt(txtT.getText());
+    	}catch(NumberFormatException e) {
+    		txtResult.clear();
+    		txtResult.appendText("Inserisci dei numeri validi");
+    		return;
+    	}
+       
+    	txtResult.clear();
+    	txtResult.appendText("Ecco dove sono i turisti: " + this.model.getSimulazione(g, t, p));
     }
 
     @FXML

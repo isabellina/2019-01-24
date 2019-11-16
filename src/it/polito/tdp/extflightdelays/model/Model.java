@@ -65,6 +65,11 @@ public class Model {
 		return ret;
 	}
 	
-	
+	public String getSimulazione(int giorni, int turisti, String partenza) {
+		Simulatore s = new Simulatore();
+		s.init(turisti, giorni, this.grafo, partenza);
+		s.run();
+		return s.getTuristi();
+	}
 	
 }
